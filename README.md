@@ -1,6 +1,6 @@
 # receptek
-recept fájl(ok) egy adott recept összetevői \n
-összetevők fájl 1kg, 1l összetevő ára
+- recept fájl(ok) egy adott recept összetevői
+- összetevők fájl 1kg, 1l összetevő ára
 A program: 
 - 0 kilépés
 - 1 új recept
