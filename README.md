@@ -1,6 +1,6 @@
 # receptek
-recept fájl(ok) egy adott recept összetevői
-összetevők fájl 1kg, 1l összetevő ára
+recept fájl(ok) egy adott recept összetevői  
+összetevők fájl 1kg, 1l összetevő ára  
 A felhasználó választhat az alábbiak közül: 
 - 0 kilépés
 - 1 új recept
