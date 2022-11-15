@@ -5,3 +5,5 @@ while choice != '0':
     choice = menu()
     if choice == '1':
         addNewRecept()
+    if choice == '2':
+        addNewOsszetevo()

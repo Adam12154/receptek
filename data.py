@@ -1,1 +1,1 @@
-összetevők = {}
+osszetevok = {}

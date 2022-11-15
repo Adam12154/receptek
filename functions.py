@@ -1,6 +1,8 @@
 from os import system
 from data import *
 
+osszetevok = 'osszetevok.csv'
+
 
 def menu():
     system('cls')
@@ -15,6 +17,15 @@ def menu():
 
 def addNewRecept():
     f = open('')
-    
+
 
     f.close()
+
+def addNewOsszetevo(osszetevo, ar):
+    system('cls')
+    print('Új összetevő')
+    osszetevo = input('Összetevő: ')
+    ar  = input('Ára: ')
+    osszetevok[osszetevo] = ar
+    input('Autó felvéve. Tovább (Enter)')
+    
