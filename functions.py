@@ -21,11 +21,10 @@ def addNewRecept():
 
     f.close()
 
-def addNewOsszetevo(osszetevo, ar):
-    system('cls')
-    print('Új összetevő')
-    osszetevo = input('Összetevő: ')
-    ar  = input('Ára: ')
-    osszetevok[osszetevo] = ar
-    input('Autó felvéve. Tovább (Enter)')
+def osszesOsszetevo():
+    file = open(osszetevok, 'r', encoding='utf-8')
+    global címsor 
+    címsor = file.readline()
+    file.close()
+
     
