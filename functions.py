@@ -1,7 +1,9 @@
 from os import system
 from data import *
+osszetevoneve = []
+osszetevoara = []
 
-osszetevok = 'osszetevok.csv'
+filename = 'osszetevok.csv'
 
 
 def menu():
@@ -15,16 +17,28 @@ def menu():
     print('6 - Összetevő törlése')
     return input('Választás: ')
 
-def addNewRecept():
-    f = open('')
-
-
-    f.close()
+def loadOsszetevok():
+    file = open(filename, 'r', encoding='utf-8')
+    global címsor
+    címsor = file.readline()
+    for row in file:
+        splitted = row.strip().split(';')
+        osszetevoneve.append(splitted[0])
+        osszetevoara.append(splitted[1])
+    file.close
+    input()
 
 def osszesOsszetevo():
-    file = open(osszetevok, 'r', encoding='utf-8')
-    global címsor 
-    címsor = file.readline()
-    file.close()
+    system('cls')
+    print('Összetevők listája:')
+    for nev in osszetevoneve:
+        print(f'\t{nev}')
 
-    
+
+def Mentes():
+    with open(filename, 'w', encoding='utf-8') as cel:
+        cel.write(címsor)
+        for i in range(len(osszetevoneve)):
+            cel.write(f'{osszetevoneve[i]};{osszetevoara[i]}\n')
+    osszetevoara.clear()
+    osszetevoneve.clear()
