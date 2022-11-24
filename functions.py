@@ -24,21 +24,69 @@ def menu():
     print('4 - Recept törlés')
     return input('Választás: ')
 
+
+def ReceptListazas(talaltreceptek):
+    print('nfesesfsfe')
+    valasz = ''
+    while not valasz != '0':
+        print('0 - Kilépés')
+        talaltindex = []
+        for i in talaltreceptek:
+            print(f'{i+1} - {etelek[i]}')
+            talaltindex.append(i)
+        valasz = input('\nVálasz: ')
+        if valasz == '0':
+            Kilepes()
+        elif valasz in talaltindex:
+            print('niggerádi')
+            time.sleep(1.5)
+        else:
+            system('cls')
+            print('Hibás válasz!')
+            time.sleep(1.5)
+def ReceptKereses():
+    valasz = ''
+    while valasz != '0':
+        system('cls')
+        print('0 - Kilépés\n1 - Keresés összetevők alapján\n2 - Keresés ár alapján\n3 - Böngészés a receptek között')
+        valasz = input('\nVálasz: ')
+        if valasz == '0':
+            Kilepes()
+        elif valasz == '1':
+            talaltreceptek = []
+
+            system('cls')
+            bekertosszetevok = input('Adja meg a szűrni kívánt összetevőket vesszővel elválasztva: ').lower()
+            bekertosszetevok2 = bekertosszetevok.split(',')
+            for i,osszetevo in enumerate(osszetevok):
+                osszetevok2 = osszetevo.split(',')
+                for bekertosszetevo in bekertosszetevok2:
+                    if bekertosszetevo in osszetevok2:
+                        talaltreceptek.append(i)
+            ReceptListazas(talaltreceptek)
+        elif valasz == '2':
+            pass
+        elif valasz == '3':
+            pass
+        else:
+            system('cls')
+            print('Helytelen válasz!')
+            time.sleep(1.5)
+
 def Osszetevok():
     choice = ''
-    while not choice.lower == '0':
+    while not choice.lower() == '0':
         system('cls')
-        print(choice)
         print('0 - Kilépés\n1 - Összetevők kilistázása\n2 - Összetevő hozzáadása\n3 - Összetevő törlése')
         choice = input('\nVálasz: ').lower()
         if choice == '0':
             Kilepes()
         elif choice == '1':
             system('cls')
-            print('NÉV\t\tÁR')
+            print('NÉV\t\t\tÁR')
             for i,item in enumerate(osszetevoneve):
-                print(f'{item.capitalize()}\t\t{osszetevoara[i]} Ft')
-                input('\nA továbblépéshez nyomja meg az ENTER-t!')
+                print(f'{item.capitalize()}\t\t\t{osszetevoara[i]} Ft')
+            input('\nA továbblépéshez nyomja meg az ENTER-t!')
         elif choice == '2':
             system('cls')
             bekertosszetevo = input('Adja meg az összetevőt: ')
@@ -47,14 +95,14 @@ def Osszetevok():
             print(f'Biztosan szeretné menteni ezt az összetevőt? ({bekertosszetevo.capitalize()} - {bekertar} Ft)')
             valasz = False
             while valasz != True:
-                valasztas = input('\nVálasz (i/n)').capitalize()
+                valasztas = input('\nVálasz (i/n)')
                 if valasztas == 'i':
                     osszetevoneve.append(bekertosszetevo)
                     osszetevoara.append(bekertar)
                     system('cls')
-                    print('Az összetevőd elmentettük')
-                    time.sleep(1.5)
+                    print('Az összetevőd elmentettük!')
                     valasz = True
+                    time.sleep(1.5)
                 elif valasztas == 'n':
                     Kilepes()
                     valasz = True
@@ -103,7 +151,7 @@ def Ujrecept():
     bekertosszetevok2 = bekertosszetevok.split(',')
 
     for i in range(len(bekertosszetevok2)):
-        bekertmennyiseg = input(f'Adja meg ennek az öszetevőnek ({bekertosszetevok2[i]}) a mennyiségét (gramm/db/liter): ')
+        bekertmennyiseg = input(f'Adja meg ennek az öszetevőnek ({bekertosszetevok2[i]}) a mennyiségét (kg/db/liter): ')
         if not bekertosszetevok2[i].lower() in osszetevoneve:
             ar = input(f'Adja meg ennek az összetevőnek ({bekertosszetevok2[i]}) az egységárát: ')
             osszetevoneve2.append(bekertosszetevok2[i])
@@ -115,8 +163,8 @@ def Ujrecept():
     system('cls')
     print(f'Az étel neve: {bekertetel.capitalize()}')
     print(f'Az étel hozzávalói:')
-    for item in bekertosszetevok2:
-        print(f'\t{bekertosszetevok2[i].capitalize()}  -  {bekertmennyiseg2[i]}')
+    for i in range(len(bekertosszetevok2)):
+        print(f'\t{bekertosszetevok2[i]}  -  {bekertmennyiseg2[i]}')
     print(f'Recept:')
     print(bekertrecept)
 

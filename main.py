@@ -12,7 +12,7 @@ while choice != '0':
     elif choice =='2':
         Ujrecept()
     elif choice =='3':
-        pass
+        ReceptKereses()
     elif choice == '4':
         pass
     else:
