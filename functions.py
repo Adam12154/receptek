@@ -1,5 +1,7 @@
 from os import system
 import time
+BOLDstart = '\033[1;3m'
+BOLDend = '\033[0m'
 
 osszetevoneve = []
 osszetevoara = []
@@ -24,26 +26,48 @@ def menu():
     print('4 - Recept törlés')
     return input('Választás: ')
 
+def EtelAra(needle):
+    szorzat = 0
+    osszetevok2 = osszetevok[int(needle)].split(',')
+    for index,item in enumerate(osszetevok2):
+        for i,osszetevonev in enumerate(osszetevoneve):
+            if item.lower() == osszetevonev:
+                mennyiseg = mennyisegek[needle].split(',')
+                szorzat += float(osszetevoara[i]) * float(mennyiseg[index])
+    return szorzat
 
 def ReceptListazas(talaltreceptek):
-    print('nfesesfsfe')
+    etellista = []
     valasz = ''
-    while not valasz != '0':
+    while valasz != '0':
+        system('cls')
         print('0 - Kilépés')
         talaltindex = []
-        for i in talaltreceptek:
-            print(f'{i+1} - {etelek[i]}')
-            talaltindex.append(i)
+        for i,item in enumerate(talaltreceptek):
+            print(f'{i+1} - {etelek[item].capitalize()}')
+            etellista.append(item)
+            talaltindex.append(i+1)
         valasz = input('\nVálasz: ')
         if valasz == '0':
             Kilepes()
-        elif valasz in talaltindex:
-            print('niggerádi')
-            time.sleep(1.5)
+        elif int(valasz) in talaltindex:
+            system('cls')
+            print(f'{BOLDstart}{etelek[etellista[int(valasz)-1]].capitalize()}{BOLDend}\n')
+            for i,hozzavalo in enumerate(osszetevok[etellista[int(valasz)-1]].split(',')):
+                osszetvok2 = mennyisegek[etellista[int(valasz)-1]].split(',')
+                if i < 1:
+                    print(f'Hozzávalók:\t- {hozzavalo}   {osszetvok2[i]}')
+                else:    
+                    print(f'\t\t- {hozzavalo}   {osszetvok2[i]}')
+                printed = receptek[etellista[int(valasz)-1]]
+            print('\nAz étel elkészítése:\n',printed)
+            print(f'Az étel elkészítése {round(EtelAra(etellista[int(valasz)-1]))}Ft-ba kerül.')
+            input('\nA továbblépéshez nyomja meg az ENTER-t')
         else:
             system('cls')
             print('Hibás válasz!')
             time.sleep(1.5)
+
 def ReceptKereses():
     valasz = ''
     while valasz != '0':
@@ -54,20 +78,31 @@ def ReceptKereses():
             Kilepes()
         elif valasz == '1':
             talaltreceptek = []
-
             system('cls')
-            bekertosszetevok = input('Adja meg a szűrni kívánt összetevőket vesszővel elválasztva: ').lower()
-            bekertosszetevok2 = bekertosszetevok.split(',')
-            for i,osszetevo in enumerate(osszetevok):
-                osszetevok2 = osszetevo.split(',')
-                for bekertosszetevo in bekertosszetevok2:
-                    if bekertosszetevo in osszetevok2:
-                        talaltreceptek.append(i)
+            bekertosszetevok2 = input('Adja meg a szűrni kívánt összetevőket vesszővel elválasztva: ')
+            bekertosszetevok = bekertosszetevok2.lower().split(',')
+            for i,osszetevo2 in enumerate(osszetevok):
+                osszes = 0
+                osszetevo = osszetevo2.split(',')
+                for bekertosszetevo in bekertosszetevok:
+                    if not bekertosszetevo in osszetevo:
+                        osszes += 1
+                if osszes < 1:
+                    talaltreceptek.append(i)
             ReceptListazas(talaltreceptek)
         elif valasz == '2':
-            pass
+            system('cls')
+            talaltreceptek = []
+            bekertar = input('Adja meg, a maximum árat, amiben keres: ')
+            for i in range(len(etelek)):
+                if EtelAra(i) <= int(bekertar):
+                    talaltreceptek.append(i)
+            ReceptListazas(talaltreceptek)
         elif valasz == '3':
-            pass
+            talaltreceptek = []
+            for i in range(len(etelek)):
+                talaltreceptek.append(i)
+            ReceptListazas(talaltreceptek)
         else:
             system('cls')
             print('Helytelen válasz!')
@@ -83,9 +118,12 @@ def Osszetevok():
             Kilepes()
         elif choice == '1':
             system('cls')
-            print('NÉV\t\t\tÁR')
+            print(f'{BOLDstart}NÉV\t\t\tÁR\n{BOLDend}')
             for i,item in enumerate(osszetevoneve):
-                print(f'{item.capitalize()}\t\t\t{osszetevoara[i]} Ft')
+                if len(item) < 8:
+                    print(f'{item.capitalize()}\t\t\t{osszetevoara[i]} Ft')
+                else:
+                    print(f'{item.capitalize()}\t\t{osszetevoara[i]} Ft')
             input('\nA továbblépéshez nyomja meg az ENTER-t!')
         elif choice == '2':
             system('cls')
@@ -144,12 +182,10 @@ def Ujrecept():
     bekertmennyiseg2 = []
     osszetevoneve2 = []
     osszetevoara2 = []
-    
     system('cls')
     bekertetel = input('Adja meg az étel nevét:').lower()
     bekertosszetevok = input('Adja meg az összetevők listáját vesszővel elválasztva:').lower()
     bekertosszetevok2 = bekertosszetevok.split(',')
-
     for i in range(len(bekertosszetevok2)):
         bekertmennyiseg = input(f'Adja meg ennek az öszetevőnek ({bekertosszetevok2[i]}) a mennyiségét (kg/db/liter): ')
         if not bekertosszetevok2[i].lower() in osszetevoneve:
@@ -157,9 +193,7 @@ def Ujrecept():
             osszetevoneve2.append(bekertosszetevok2[i])
             osszetevoara2.append(ar)
         bekertmennyiseg2.append(bekertmennyiseg)
-
     bekertrecept = input(f'Adja meg a(z) {bekertetel.capitalize()} étel elkészítési módját: ')
-
     system('cls')
     print(f'Az étel neve: {bekertetel.capitalize()}')
     print(f'Az étel hozzávalói:')
@@ -167,7 +201,6 @@ def Ujrecept():
         print(f'\t{bekertosszetevok2[i]}  -  {bekertmennyiseg2[i]}')
     print(f'Recept:')
     print(bekertrecept)
-
     valasztas = input('\nMenti a receptet? (i/n): ')
     if valasztas.upper() == 'I':
         for i in range(len(osszetevoneve2)):
@@ -188,12 +221,10 @@ def Ujrecept():
         time.sleep(1.5)
     elif valasztas.upper() == 'N':
         Kilepes()
-
     else:
         print('Helytelen válasz')
         time.sleep(1.5)
         Kilepes()
-
 
 def loadReceptek():
     global címsor2
@@ -206,7 +237,6 @@ def loadReceptek():
             mennyisegek.append(splitted[2])
             receptek.append(splitted[3])
 
-
 def loadOsszetevok():
     file = open(filename, 'r', encoding='utf-8')
     global címsor
@@ -216,14 +246,12 @@ def loadOsszetevok():
         osszetevoneve.append(splitted[0])
         osszetevoara.append(splitted[1])
     file.close
-    input()
 
 def osszesOsszetevo():
     system('cls')
     print('Összetevők listája:')
     for nev in osszetevoneve:
         print(f'\t{nev}')
-
 
 def MentesOsszetevok():
     with open(filename, 'w', encoding='utf-8') as cel:
@@ -242,6 +270,28 @@ def MentesReceptek():
     osszetevok.clear()
     mennyisegek.clear()
     receptek.clear
+
+def ReceptTorles():
+    system('cls')
+    bekertrecept = input('Adja meg a törölni kívánt étel nevét: ').lower()
+    for i,item in enumerate(etelek):
+        if bekertrecept == item:
+            valasztas = False
+            while valasztas != True:
+                valasz = input('Biztosan törölni akarja ezt a receptet? (i/n): ').lower()
+                if valasz == 'i':
+                    receptek.pop(i)
+                    osszetevok.pop(i)
+                    etelek.pop(i)
+                    mennyisegek.pop(i)
+                    valasztas = True
+                elif valasz == 'n':
+                    Kilepes()
+                    valasztas = True
+                else:
+                    system('cls')
+                    print('Hibás válasz!')
+                    time.sleep(1.5)
 
 def Kilepes():
     system('cls')

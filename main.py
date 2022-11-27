@@ -14,7 +14,7 @@ while choice != '0':
     elif choice =='3':
         ReceptKereses()
     elif choice == '4':
-        pass
+        ReceptTorles()
     else:
         system('cls')
         print('hibás válasz')
